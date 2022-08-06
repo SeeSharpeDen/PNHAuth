@@ -20,9 +20,9 @@ async function submitForm(e, form) {
         'email': document.getElementById('email').value,
         'guilded_username': document.getElementById('guilded_username').value
     });
-
-    
-
 }
+
+
+
 
 
