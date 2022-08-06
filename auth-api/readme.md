@@ -7,6 +7,7 @@
     "name": "Markus Persson",
     "email": "Notch@mojang.com",
     "email_authed": false,
+    "unique_code": "Pxym7N2zJRs",
 }
 ```
 - uuid
@@ -24,6 +25,9 @@
 - email_authed
     > Boolean,
     > Has the email address been authenticated?
+- unique_code
+    > String,
+    > The unique code of the user's authentication process.
 
 
 # Endponts
@@ -31,14 +35,46 @@
 ## GET `/v1/player`
 Gets all players in the database.
 
+**200 Response:**
+```json
+[
+    {
+        "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
+        "username": "Notch",
+        "guilded-username": null,
+        "name": "Markus Persson",
+        "email": "Notch@mojang.com",
+        "email_authed": false,
+    }
+]
+```
 ## GET `/v1/player/[Minecraft UUID]/`
 Gets a particular player from the database.
 
 `[Minecraft UUID]`
 > The UUID of the user to get.
 
+**200 Response:**
+```json
+{
+    "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
+    "username": "Notch",
+    "guilded-username": null,
+    "name": "Markus Persson",
+    "email": "Notch@mojang.com",
+    "email_authed": false,
+}
+```
+
 ## POST `/v1/player/[Minecraft UUID]/`
 Used to create a new player.
 
 `[Minecraft UUID]`
 > The UUID of the user to create.
+
+**201 Response:**
+```json
+{
+    "unique_code": "Pxym7N2zJRs",
+}
+```
