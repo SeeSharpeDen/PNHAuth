@@ -3,18 +3,18 @@
 {
     "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
     "username": "Notch",
-    "guilded-username": null,
+    "guilded_username": null,
     "name": "Markus Persson",
     "email": "Notch@mojang.com",
     "email_authed": false,
-    "unique_code": "Pxym7N2zJRs",
+    "unique_code": "Pxym7N2zJRs_",
 }
 ```
 - uuid
     > UUID of the minecraft player.
 - username
     > The username of the minecraft player. (This is redundant due to uuid)
-- guilded-username
+- guilded_username
     > The Guilded username that the player has.
 - name
     > String,
@@ -41,7 +41,7 @@ Gets all players in the database.
     {
         "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
         "username": "Notch",
-        "guilded-username": null,
+        "guilded_username": null,
         "name": "Markus Persson",
         "email": "Notch@mojang.com",
         "email_authed": false,
@@ -59,7 +59,7 @@ Gets a particular player from the database.
 {
     "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
     "username": "Notch",
-    "guilded-username": null,
+    "guilded_username": null,
     "name": "Markus Persson",
     "email": "Notch@mojang.com",
     "email_authed": false,
@@ -76,5 +76,25 @@ Used to create a new player.
 ```json
 {
     "unique_code": "Pxym7N2zJRs",
+}
+```
+
+## POST `/v1/link/[Unique Code]`
+Links data with a link code.
+
+**Data To send:**
+```json
+{
+    "name": "John Smith",
+    "email": "smithers95@hotmail.com",
+    "guilded_username": "xxX_Smithers94_Xxx", // Can be null
+}
+```
+
+**422 Response:**
+```json
+{
+    "email": "Email must be a valid email address.",
+    "name": "Name is required."
 }
 ```
