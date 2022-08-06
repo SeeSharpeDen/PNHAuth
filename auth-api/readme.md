@@ -1,3 +1,18 @@
+# players table
+```sql
+CREATE TABLE public.players
+(
+    uuid uuid NOT NULL,
+    username text,
+    guilded_username text,
+    name text,
+    email text,
+    email_authed boolean,
+    unique_code text,
+    PRIMARY KEY (uuid)
+);
+```
+
 # Player Object
 ```json
 {
@@ -79,10 +94,10 @@ Used to create a new player.
 }
 ```
 
-## POST `/v1/link/[Unique Code]`
-Links data with a link code.
+## POST `/v1/link/[Link Code]`
+Updates player details and consumes the link code.
 
-**Data To send:**
+**body:**
 ```json
 {
     "name": "John Smith",
@@ -95,6 +110,9 @@ Links data with a link code.
 ```json
 {
     "email": "Email must be a valid email address.",
-    "name": "Name is required."
+    "name": "Please enter your full name.",
+    "guilded_username": "Please enter a valid guilded username (optional)."
 }
 ```
+## GET `/v1/verify/[Email Code]`
+Verify's a user's email address.
