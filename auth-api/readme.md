@@ -12,7 +12,7 @@
     - [GET `/v1/player/[Minecraft UUID]/`](#get-v1playerminecraft-uuid)
     - [POST `/v1/player/[Minecraft UUID]/`](#post-v1playerminecraft-uuid)
     - [POST `/v1/link/[Link Code]`](#post-v1linklink-code)
-    - [GET `/v1/verify/[Email Code]`](#get-v1verifyemail-code)
+    - [GET `/v1/link/[Link Code]/[Email Code]`](#get-v1linklink-codeemail-code)
 <!-- /TOC -->
 
 ## Overview
@@ -98,6 +98,9 @@ CREATE UNIQUE INDEX email_links_code_idx ON public.email_links USING btree (code
 ### GET `/v1/player`
 Gets all players in the database.
 
+**404 Response**
+> uuid is not a valid format or that uuid isn't present in the database.
+
 **200 Response:**
 > Returns an array of [player objects](#player-object).
 ```json
@@ -145,6 +148,8 @@ Used to create a new player.
 ```json
 {
     "link_code": "Pxym7N2zJRs",
+    "link_url": "https://example.com/link/Pxym7N2zJRs",
+    "url": "https://example.com/api/v1/player/069a79f4-44e9-4726-a5be-fca90e38aaf5"
 }
 ```
 
@@ -175,7 +180,7 @@ Updates player details and consumes the link code.
 ```
 
 
-### GET `/v1/verify/[Email Code]`
+### GET `/v1/link/[Link Code]/[Email Code]`
 Verify's a user's email address.
 
 *NOT FINISHED*
