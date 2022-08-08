@@ -1,4 +1,4 @@
-@host=http://localhost:3000
+@host=http://localhost:33084
 
 
 ###
@@ -8,9 +8,9 @@ GET {{host}}/v1/players
 HTTP/1.1 200  - OK
 x-powered-by: Express
 content-type: application/json; charset=utf-8
-content-length: 654
-etag: W/"28e-ErhO7J/BJAf8Wm2a1D8rmlpeZ5o"
-date: Sun, 07 Aug 2022 10:52:14 GMT
+content-length: 618
+etag: W/"26a-I0UqqX7zzAcN4zVWY/f0DQw/ilc"
+date: Mon, 08 Aug 2022 05:01:03 GMT
 connection: close
 
 
@@ -23,7 +23,7 @@ x-powered-by: Express
 content-type: application/json; charset=utf-8
 content-length: 209
 etag: W/"d1-26hythqToxe8fhdb9lN8Ius5iK4"
-date: Sun, 07 Aug 2022 10:52:14 GMT
+date: Mon, 08 Aug 2022 05:00:59 GMT
 connection: close
 
 
@@ -35,6 +35,7 @@ Content-Type: application/json
     "uuid": "69e09d25-0584-445c-ac43-d66a110d1795",
     "username": "Wingoerless"
 }
+
 
 HTTP/1.1 409  - Conflict
 x-powered-by: Express
@@ -55,6 +56,7 @@ Content-Type: application/json
     "email": "tom.parker1235@gmail.com"
 }
 
+
 HTTP/1.1 201  - Created
 x-powered-by: Express
 content-type: text/html; charset=utf-8
@@ -70,6 +72,9 @@ GET {{host}}/v1/link/YOa6muEF/Cgrsbau1HEyIIVQg9jtI8OpZbzY2NYs5
 
 HTTP/1.1 404  - Not Found
 x-powered-by: Express
-date: Sun, 07 Aug 2022 10:58:17 GMT
+content-security-policy: default-src 'none'
+x-content-type-options: nosniff
+content-type: text/html; charset=utf-8
+content-length: 188
+date: Mon, 08 Aug 2022 05:01:15 GMT
 connection: close
-content-length: 0
