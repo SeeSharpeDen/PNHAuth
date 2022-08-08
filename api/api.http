@@ -9,23 +9,23 @@ Authorization: {{API_KEY}}
 HTTP/1.1 200  - OK
 x-powered-by: Express
 content-type: application/json; charset=utf-8
-content-length: 635
-etag: W/"27b-41gJesQ0Zp7CyR1OqTDd2jATQpA"
-date: Mon, 08 Aug 2022 08:13:05 GMT
+content-length: 650
+etag: W/"28a-SQpSq6fsQB3fn7HqP1S1qZRuyfU"
+date: Mon, 08 Aug 2022 11:16:55 GMT
 connection: close
 
 
 ###
 # get a single player by uuid.
-GET {{host}}/v1/players/069a79f4-44e9-4726-a5be-fca90e38aaf5
+GET {{host}}/v1/players/7c529ba2-162f-11ed-861d-0242ac120002
 Authorization: {{API_KEY}}
 
 HTTP/1.1 200  - OK
 x-powered-by: Express
 content-type: application/json; charset=utf-8
-content-length: 204
-etag: W/"cc-ffEolBQ8/KQErVrZ7iZ6zUi6r48"
-date: Mon, 08 Aug 2022 08:13:03 GMT
+content-length: 320
+etag: W/"140-k6OGeH+bwQCDQ598X4ONx8gRZ4k"
+date: Mon, 08 Aug 2022 11:22:48 GMT
 connection: close
 
 
@@ -46,7 +46,21 @@ x-powered-by: Express
 content-type: text/html; charset=utf-8
 content-length: 25
 etag: W/"19-OqrwLljcLBdgxRAEjhlo5YCBVZ8"
-date: Mon, 08 Aug 2022 06:26:27 GMT
+date: Mon, 08 Aug 2022 10:46:37 GMT
+connection: close
+
+
+###
+# Create a new link for a player
+GET {{host}}/v1/players/7c529ba2-162f-11ed-861d-0242ac120002/new-link
+Authorization: {{API_KEY}}
+
+HTTP/1.1 201  - Created
+x-powered-by: Express
+content-type: application/json; charset=utf-8
+content-length: 138
+etag: W/"8a-KiV+9PAX6qgD+Y4Jl9JdEWzRgwQ"
+date: Mon, 08 Aug 2022 11:33:33 GMT
 connection: close
 
 

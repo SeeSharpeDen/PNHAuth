@@ -1,6 +1,8 @@
 # Index
 
 <!-- TOC -->
+- [How to run the API](#how-to-run-the-api)
+- [Auth](#auth)
 - [Player Object](#player-object)
 - [Database](#database)
     - [Players](#players)
@@ -12,6 +14,29 @@
     - [POST `/v1/link/[Link Code]`](#post-v1linklink-code)
     - [GET `/v1/link/[Link Code]/[Email Code]`](#get-v1linklink-codeemail-code)
 <!-- /TOC -->
+
+## How to run the API
+1. Clone this repo
+2. `cd api`
+3. Make a copy of the `template.env` file called `.env` in the `api` directory. Edit the contents of the file accordingly.
+    > Remember to create a good random api key. you could run the `apg -m 128 -n 1` command to generate one 128 characters long.
+4. run `npm install` to install all the dependences of this node project.
+5. execute `node app.js` to execute the api. Alternatively you could use `nodemon` for automatic restarts while developing this API.
+
+## Overview
+Players/users become Authorized to update their details by requesting a temporary `link_code`. The link code could be provided by the plugin on the minecraft server or perhaps a moderator through a webpage.
+
+### `/v1/players`
+This is where player data is accessed and modified.
+
+Access to any Player data is Authenticate and Authorized by matching the `API_KEY` environment variable (can be set in `.env`) with the contents of the client's `Authorization` header.
+
+
+### `/v1/link`
+This is where players can temporally access and modify their own data.
+
+Players are Authenticated by the unique `link_code`. These expire after a pre-defined amount of time. We know what player has what code. Therefore players should keep this url/code secret, this cannot be guaranteed.
+
 
 ## Player Object
 ```json
@@ -49,6 +74,21 @@
 - email_code
     > The code sent to the email address. The combination of link_code and email_code is used to create verify email url.
 
+## Link Object
+```json
+{
+    "code": "vp5r2q",
+    "duration": "5 minutes",
+    "public_url": "https://mc.pnh.net/link/vp5r2q",
+}
+```
+
+- code
+    > the code for this link.
+- duration
+    > the duration of time remaining before this link expires.
+- public_url
+    > the url a player would use to interact with their account.
 
 ## Database
 
@@ -123,14 +163,43 @@ Gets a particular player from the database.
 > Returns a [player object](#player-object).
 ```json
 {
-	"uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
-	"username": "Notch",
-	"guilded_username": "tom.parker1235@gmail.com",
-	"name": "jojo the awesome",
-	"email": null,
-	"link_code": null,
+	"uuid": "7c529ba2-162f-11ed-861d-0242ac120002",
+	"username": "coolcat",
 	"verified": null,
-	"code_expired": null
+	"guilded_username": null,
+	"name": "Mr Cool Cat",
+	"email": "coolcat@gmail.com",
+	"link": {
+		"code": "vp5r2q",
+		"duration": "4 minutes 30 seconds",
+		"public_url": "https://example.com/link/vp5r2q",
+	}
+}
+```
+
+
+### GET `/v1/player/[Minecraft UUID]/new-link`
+Creates a new link for a particular user.
+
+**`[Minecraft UUID]`**
+> The UUID of the user to create a new link for.
+
+**403 Response**
+> The Authorization header's data does not contain a matching API_KEY
+
+**404 Response**
+> The provided `[Minecraft UUID]` doesn't match any players in the database.
+
+**200 Response**
+> Returns a [link object](#link-object).
+```json
+{
+	"link": {
+		"code": "vp5r2q",
+		"duration": "5 minutes",
+		"public_url": "https://mc.pnh.net/link/vp5r2q",
+		"location": "https://mc.pnh.net/api/vp5r2q"
+	}
 }
 ```
 

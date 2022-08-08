@@ -82,7 +82,7 @@ router.post("/:link_code", async (req, res) => {
             email = $3,
             email_code = $4,
             verified = NOW(),
-            link_created = null
+            link_created = null,
         WHERE link_code = $5`,
         [data.name, data.guilded_username, data.email, email_code, link_code]
     );
@@ -91,10 +91,10 @@ router.post("/:link_code", async (req, res) => {
     if (rowCount == 0) {
         // TODO: Maybe throw an exception for this?
         console.warn(`Nothing was updated on link_code ${link_code}`);
-        return res.status(500).send("Nothing was updated.");
+        return res.status(500).send();
     }
 
-    // Generate our email
+    // Send the email.
     await sendEmail(data.email, url, data);
 
     res.status(201).send();
