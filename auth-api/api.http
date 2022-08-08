@@ -1,35 +1,38 @@
-@host=http://localhost:33084
+@host=http://localhost:{{HTTP_PORT}}
 
 
 ###
 # get all players.
 GET {{host}}/v1/players
+Authorization: {{API_KEY}}
 
 HTTP/1.1 200  - OK
 x-powered-by: Express
 content-type: application/json; charset=utf-8
-content-length: 618
-etag: W/"26a-I0UqqX7zzAcN4zVWY/f0DQw/ilc"
-date: Mon, 08 Aug 2022 05:01:03 GMT
+content-length: 641
+etag: W/"281-azF5PMuJVD2z5oj6bwTgSuBeYp8"
+date: Mon, 08 Aug 2022 06:03:39 GMT
 connection: close
 
 
 ###
 # get a single player by uuid.
 GET {{host}}/v1/players/069a79f4-44e9-4726-a5be-fca90e38aaf5
+Authorization: {{API_KEY}}
 
 HTTP/1.1 200  - OK
 x-powered-by: Express
 content-type: application/json; charset=utf-8
 content-length: 209
 etag: W/"d1-26hythqToxe8fhdb9lN8Ius5iK4"
-date: Mon, 08 Aug 2022 05:00:59 GMT
+date: Mon, 08 Aug 2022 06:03:38 GMT
 connection: close
 
 
 ###
 # Insert new player
 POST {{host}}/v1/players
+Authorization: {{API_KEY}}
 Content-Type: application/json
 {
     "uuid": "69e09d25-0584-445c-ac43-d66a110d1795",
@@ -42,16 +45,16 @@ x-powered-by: Express
 content-type: text/html; charset=utf-8
 content-length: 25
 etag: W/"19-OqrwLljcLBdgxRAEjhlo5YCBVZ8"
-date: Sun, 07 Aug 2022 10:52:14 GMT
+date: Mon, 08 Aug 2022 06:03:52 GMT
 connection: close
 
 
 ###
 # complete the link process.
-POST {{host}}/v1/link/YOa6muEF
+POST {{host}}/v1/link/b3qa4OIS
 Content-Type: application/json
 {
-    "name": "jojo the awesome",
+    "name": "Gabe Newel",
     "guilded_username" : null,
     "email": "tom.parker1235@gmail.com"
 }
@@ -62,19 +65,16 @@ x-powered-by: Express
 content-type: text/html; charset=utf-8
 content-length: 0
 etag: W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"
-date: Sun, 07 Aug 2022 10:52:17 GMT
+date: Mon, 08 Aug 2022 05:10:31 GMT
 connection: close
 
 
 ###
 # Email verifcation
-GET {{host}}/v1/link/YOa6muEF/Cgrsbau1HEyIIVQg9jtI8OpZbzY2NYs5
+GET {{host}}/v1/link/b3qa4OIS/A7QHFVWrShyouc0Y9SZQR3yT5XR8lJEK
 
-HTTP/1.1 404  - Not Found
+HTTP/1.1 200  - OK
 x-powered-by: Express
-content-security-policy: default-src 'none'
-x-content-type-options: nosniff
-content-type: text/html; charset=utf-8
-content-length: 188
-date: Mon, 08 Aug 2022 05:01:15 GMT
+date: Mon, 08 Aug 2022 05:14:17 GMT
 connection: close
+content-length: 0
