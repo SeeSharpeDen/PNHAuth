@@ -38,7 +38,7 @@ router.post("/:link_code", async (req, res) => {
     // Update the player's information in the database.
     const { rowCount } = await db.query(
         "UPDATE players SET name = $1, guilded_username = $2, email = $3, email_code = $4 WHERE link_code = $5",
-        [data.name, data.email, data.guilded_username, email_code, link_code]
+        [data.name, data.guilded_username, data.email, email_code, link_code]
     );
 
     // Return a 404 because nothing was updated.
