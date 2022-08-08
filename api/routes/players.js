@@ -9,7 +9,7 @@ module.exports = router;
 
 // Get all players.
 router.get("/", async (req, res) => {
-    const { rows } = await db.query("SELECT * FROM players")
+    const { rows } = await db.query(`SELECT uuid, username, guilded_username, verified, name, email, link_code, verified ,link_created < NOW() - INTERVAL '${process.env.LINK_TIMEOUT}' as code_expired FROM players`)
     res.json(rows);
 });
 
@@ -21,7 +21,7 @@ router.get("/:uuid", async (req, res) => {
     }
 
     // Get the player from the database.
-    db.query("SELECT * FROM players WHERE uuid = $1",
+    db.query(`SELECT uuid, username, verified, guilded_username, name, email, link_code ,link_created < NOW() - INTERVAL '${process.env.LINK_TIMEOUT}' as code_expired FROM players WHERE uuid = $1`,
         [req.params.uuid]).then(result => {
             if (result.rowCount < 1)
                 res.status(404).send("No player found.");

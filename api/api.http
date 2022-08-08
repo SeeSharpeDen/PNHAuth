@@ -9,9 +9,9 @@ Authorization: {{API_KEY}}
 HTTP/1.1 200  - OK
 x-powered-by: Express
 content-type: application/json; charset=utf-8
-content-length: 641
-etag: W/"281-azF5PMuJVD2z5oj6bwTgSuBeYp8"
-date: Mon, 08 Aug 2022 06:03:39 GMT
+content-length: 635
+etag: W/"27b-41gJesQ0Zp7CyR1OqTDd2jATQpA"
+date: Mon, 08 Aug 2022 08:13:05 GMT
 connection: close
 
 
@@ -23,9 +23,9 @@ Authorization: {{API_KEY}}
 HTTP/1.1 200  - OK
 x-powered-by: Express
 content-type: application/json; charset=utf-8
-content-length: 209
-etag: W/"d1-26hythqToxe8fhdb9lN8Ius5iK4"
-date: Mon, 08 Aug 2022 06:03:38 GMT
+content-length: 204
+etag: W/"cc-ffEolBQ8/KQErVrZ7iZ6zUi6r48"
+date: Mon, 08 Aug 2022 08:13:03 GMT
 connection: close
 
 
@@ -40,32 +40,47 @@ Content-Type: application/json
 }
 
 
+
 HTTP/1.1 409  - Conflict
 x-powered-by: Express
 content-type: text/html; charset=utf-8
 content-length: 25
 etag: W/"19-OqrwLljcLBdgxRAEjhlo5YCBVZ8"
-date: Mon, 08 Aug 2022 06:03:52 GMT
+date: Mon, 08 Aug 2022 06:26:27 GMT
+connection: close
+
+
+###
+# get details from link.
+GET {{host}}/v1/link/expired
+
+HTTP/1.1 410  - Gone
+x-powered-by: Express
+content-type: text/html; charset=utf-8
+content-length: 17
+etag: W/"11-sQFWVkXGnmZTHVQfXI9qH32O0RA"
+date: Mon, 08 Aug 2022 08:52:02 GMT
 connection: close
 
 
 ###
 # complete the link process.
-POST {{host}}/v1/link/b3qa4OIS
+POST {{host}}/v1/link/expired
 Content-Type: application/json
 {
-    "name": "Gabe Newel",
+    "name": "Bing Bong",
     "guilded_username" : null,
     "email": "tom.parker1235@gmail.com"
 }
 
 
-HTTP/1.1 201  - Created
+
+HTTP/1.1 410  - Gone
 x-powered-by: Express
 content-type: text/html; charset=utf-8
-content-length: 0
-etag: W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"
-date: Mon, 08 Aug 2022 05:10:31 GMT
+content-length: 17
+etag: W/"11-sQFWVkXGnmZTHVQfXI9qH32O0RA"
+date: Mon, 08 Aug 2022 08:27:08 GMT
 connection: close
 
 
@@ -73,8 +88,8 @@ connection: close
 # Email verifcation
 GET {{host}}/v1/link/b3qa4OIS/A7QHFVWrShyouc0Y9SZQR3yT5XR8lJEK
 
-HTTP/1.1 200  - OK
+HTTP/1.1 404  - Not Found
 x-powered-by: Express
-date: Mon, 08 Aug 2022 05:14:17 GMT
+date: Mon, 08 Aug 2022 08:27:12 GMT
 connection: close
 content-length: 0

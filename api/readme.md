@@ -1,29 +1,17 @@
 # Index
 
 <!-- TOC -->
-- [Overview](#overview)
 - [Player Object](#player-object)
 - [Database](#database)
     - [Players](#players)
-    - [Links](#links)
-    - [Email Links](#email-links)
-- [Endponts](#endponts)
+- [Endpoint](#endpoint)
     - [GET `/v1/player`](#get-v1player)
     - [GET `/v1/player/[Minecraft UUID]/`](#get-v1playerminecraft-uuid)
     - [POST `/v1/player/[Minecraft UUID]/`](#post-v1playerminecraft-uuid)
+    - [GET `/v1/link/[Link Code]`](#get-v1linklink-code)
     - [POST `/v1/link/[Link Code]`](#post-v1linklink-code)
     - [GET `/v1/link/[Link Code]/[Email Code]`](#get-v1linklink-codeemail-code)
 <!-- /TOC -->
-
-## Overview
-
-When a player joins the Minecraft server a request is made to [GET `/v1/player/[Minecraft UUID]/`](#get-v1playerminecraft-uuid) by the plugin. The plugin will make permission changes based on the data retrieved from the api.
-
-If the player's UUID doesn't already exist in the database one is added. A link code is generated. This link code is used to form a URL for the the player to go to. This is sent to the player via in-game chat messages. Once the player goes to the link url they are prompted to enter their details.
-
-The website will send a request to [POST `/v1/link/[Link Code]`](#post-v1linklink-code) with the link code. This nodejs app will verify the player's details. If the details are good, we generate an unique url and email it to the player to verify their email.
-
-Once the player eventually finds the email and clicks the link the [/v1/verify/[Email Code]`](#get-v1verifyemail-code) endpoint will be invoked. This triggers the plugin to make permission changes.
 
 ## Player Object
 ```json
@@ -32,8 +20,10 @@ Once the player eventually finds the email and clicks the link the [/v1/verify/[
     "username": "Notch",
     "guilded_username": null,
     "name": "Markus Persson",
-    "email": "Notch@mojang.com",
-    "email_authed": false,
+	"email": null,
+    "link_code": "jR4c56",
+	"verified": 1659941569,
+	"link_expired": true
 }
 ```
 - uuid
@@ -48,9 +38,16 @@ Once the player eventually finds the email and clicks the link the [/v1/verify/[
 - email
     > String,
     > The player's email address.
-- email_authed
-    > Boolean,
-    > Has the email address been authenticated?
+- verified
+    > Timestamp,
+    > When was the user verified, null for not.
+- link_expired
+    > True if the link has expired. false if not expired and null if there's no code.
+- link_code
+    > String,
+    > The account link code (minecraft server > website auth)
+- email_code
+    > The code sent to the email address. The combination of link_code and email_code is used to create verify email url.
 
 
 ## Database
@@ -64,44 +61,25 @@ CREATE TABLE players (
 	guilded_username text NULL,
 	"name" text NULL,
 	email text NULL,
-	email_authed bool NULL,
+	link_code varchar NULL,
+	email_code varchar NULL,
+	link_created timestamp NULL,
+	verified timestamp NULL,
+	CONSTRAINT link_code UNIQUE (link_code),
 	CONSTRAINT players_pkey PRIMARY KEY (uuid)
 );
 ```
 
-### Links
-The map of active links. These are added and removed throughout the process of verifying players.
-```sql
-CREATE TABLE links (
-	uuid uuid NOT NULL,
-	code varchar NULL,
-	CONSTRAINT links_fk FOREIGN KEY (uuid) REFERENCES players(uuid) ON DELETE CASCADE
-);
-CREATE UNIQUE INDEX links_code_idx ON public.links USING btree (code);
-CREATE UNIQUE INDEX links_uuid_idx ON public.links USING btree (uuid);
-```
+## Endpoint
 
-### Email Links
-The map of active email links. These are added and removed throughout the process of verifying player's email addresses.
-```sql
-CREATE TABLE email_links (
-	uuid uuid NOT NULL,
-	code varchar NOT NULL,
-	CONSTRAINT email_links_fk FOREIGN KEY (uuid) REFERENCES players(uuid) ON DELETE CASCADE
-);
-CREATE UNIQUE INDEX email_links_code_idx ON public.email_links USING btree (code);
-```
-
-
-## Endponts
 
 ### GET `/v1/player`
 Gets all players in the database.
 
-**404 Response**
-> uuid is not a valid format or that uuid isn't present in the database.
+**403 Response**
+> The Authorization header's data does not contain a matching API_KEY
 
-**200 Response:**
+**200 Response**
 > Returns an array of [player objects](#player-object).
 ```json
 [
@@ -111,8 +89,20 @@ Gets all players in the database.
         "guilded_username": null,
         "name": "Markus Persson",
         "email": "Notch@mojang.com",
-        "email_authed": false,
-    }
+        "link_code": null,
+        "verified": 1659941569,
+        "code_expired": true
+    },
+    {
+		"uuid": "7c529ba2-162f-11ed-861d-0242ac120002",
+		"username": "jojo the awesome",
+		"guilded_username": "gaben",
+		"name": "Gabe Newel",
+		"email": "gabe.newel@valve.com",
+		"link_code": "gv9a44Ej",
+		"code_expired": true,
+		"verified": null
+	}
 ]
 ```
 
@@ -123,16 +113,24 @@ Gets a particular player from the database.
 **`[Minecraft UUID]`**
 > The UUID of the user to get.
 
-**200 Response:**
+**403 Response**
+> The Authorization header's data does not contain a matching API_KEY
+
+**404 Response**
+> The provided `[Minecraft UUID]` doesn't match any players in the database or it's an incorrectly formatted uuid.
+
+**200 Response**
 > Returns a [player object](#player-object).
 ```json
 {
-    "uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
-    "username": "Notch",
-    "guilded_username": null,
-    "name": "Markus Persson",
-    "email": "Notch@mojang.com",
-    "email_authed": false,
+	"uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
+	"username": "Notch",
+	"guilded_username": "tom.parker1235@gmail.com",
+	"name": "jojo the awesome",
+	"email": null,
+	"link_code": null,
+	"verified": null,
+	"code_expired": null
 }
 ```
 
@@ -143,7 +141,13 @@ Used to create a new player.
 **`[Minecraft UUID]`**
 > The UUID of the user to create.
 
-**201 Response:**
+**403 Response**
+> The Authorization header's data does not contain a matching API_KEY
+
+**409 Response**
+> The provided `[Minecraft UUID]` already exists in the database.
+
+**201 Response**
 > Returns a link code for the newly entered player.
 ```json
 {
@@ -154,33 +158,67 @@ Used to create a new player.
 ```
 
 
+### GET `/v1/link/[Link Code]`
+Gets player details.
+
+**`[Link Code]`**
+> The link code.
+
+**200 Response**
+```json
+{
+	"uuid": "069a79f4-44e9-4726-a5be-fca90e38aaf5",
+	"username": "Notch",
+	"guilded_username": null,
+	"name": "jojo the awesome",
+	"email": "tom.parker1235@gmail.com",
+	"verified": null,
+}
+```
+**404 Response**
+> The provided `[Link Code]` doesn't exist.
+
+**410 Response**
+> The provided `[Link Code]` has expired.
+
+
 ### POST `/v1/link/[Link Code]`
 Updates player details and consumes the link code.
 
 **`[Link Code]`**
 > The link code to use for linking.
 
-**body:**
-```json
+**Request:**
+```http
+Content-Type: application/json
+
 {
     "name": "John Smith",
     "email": "smithers95@hotmail.com",
-    "guilded_username": "xxX_Smithers94_Xxx", // Can be null
+    "guilded_username": "xxX_Smithers94_Xxx"
 }
 ```
+`guilded_username` can be `null`
+
+**404 Response**
+> The provided `[Link Code]` doesn't exist.
+
+**410 Response**
+> The provided `[Link Code]` has expired.
 
 **422 Response:**
-> Returns a json object where each element represents an issue with the player's input.
+> There's something wrong with the player's input. Each each element describes and issue with the input.
 ```json
 {
-    "email": "Email must be a valid email address.",
-    "name": "Please enter your full name.",
-    "guilded_username": "Please enter a valid guilded username (optional)."
+    "email": "Email must be a valid email address."
 }
 ```
-
 
 ### GET `/v1/link/[Link Code]/[Email Code]`
 Verify's a user's email address.
 
-*NOT FINISHED*
+**200 Response**
+> The email has been verified. All good.
+
+**404 Response**
+> The provided `[Link Code]` and/or `[Email Code]` doesn't exist.
