@@ -3,8 +3,10 @@ require('dotenv').config();
 
 // Start expressjs with json support for our api/http stuff.
 const express = require('express');
+const cors = require('cors');
 const mountRoutes = require('./routes');
 const app = express();
+app.use(cors());
 app.use(express.json());
 mountRoutes(app);
 

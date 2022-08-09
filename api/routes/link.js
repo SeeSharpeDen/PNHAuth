@@ -82,7 +82,7 @@ router.post("/:link_code", async (req, res) => {
             email = $3,
             email_code = $4,
             verified = NOW(),
-            link_created = null,
+            link_created = null
         WHERE link_code = $5`,
         [data.name, data.guilded_username, data.email, email_code, link_code]
     );
@@ -145,7 +145,7 @@ function validateUserData(data) {
         error["email"] = "Please enter a valid email address."
 
     // Check length of the guilded username if it exists.
-    if (data.guilded_username != null && data.guilded_username.length < 5)
+    if (data.guilded_username != null && data.guilded_username.trim() != "" && data.guilded_username.length < 5)
         error["guilded_username"] = "Please enter a valid guilded username (optional)."
 
     // If there's any error. Send the errors back in a 422 response..
