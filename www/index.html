@@ -1,47 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<!doctype html>
-<html>
 <head>
-    <title>PNH Auth</title>
-
-    <meta charset="utf-8" />
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
-
-
-
+    <!-- the data-link-code should be set via ssi (preferably nginx) to the link_code -->
+    <!-- of the url http://example.com/link/[link_code] -->
+    <!-- <meta data-link-code="test"> -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>PNH Minecraft - Edit Account</title>
 </head>
 
 <body>
-
-    <form action="" id="player_form">
-        <h2>Please fill out this form to be whitelisted</h2>
-
-        <div class="form-row">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" />
+    <header>
+        <h1>Perth Nerd Horde</h1>
+        <h3>Minecraft - Edit Account</h3>
+    </header>
+    <main>
+        <div id="profile">
+            <img data-player="profile" src="https://crafthead.net/avatar/char">
+            <h3 data-player="username" class="username"></h3>
         </div>
+        <form>
+            <p>
+                <label>Full Name</label>
+                <input type="text" name="name" data-player="name">
+                <span class="error"></span>
+            </p>
+            <p>
+                <label>Email Address</label>
+                <input type="text" name="email" data-player="email">
+                <span class="error"></span>
+            </p>
+            <p>
+                <label>Guilded Username</label>
+                <input type="text" name="guilded_username" data-player="guilded_username">
+                <span class="error"></span>
+            </p>
+        </form>
+        <button type="submit">Apply Changes</button>
+    </main>
+    <div id="loading" class="fullscreen">
+        <div class="spinner"></div>
+        <h3>Loading</h3>
+    </div>
 
-        <div class="form-row">
-            <label for="email">Email Address</label>
-            <input type="text" id="email" name="email" />
-        </div>
+    <!-- The 410 error page (link_code expired) -->
+    <div id="error410" class="fullscreen" hidden>
+        <h1>Uh Oh</h1>
+        <p>It appears your link has expired.</p>
+        <p>You'll have to create a new one on the server.</p>
+    </div>
 
-        <div class="form-row">
-            <label for="guilded_username">Guilded Username</label>
-            <input type="text" id="guilded_username" name="guilded_username" />
-        </div>
+    <!-- The 404 error page (no link_code found) -->
+    <div id="error404" class="fullscreen" hidden>
+        <h1>404</h1>
+        <p>Link not found.</p>
+        <p>You'll have to create one on the server.</p>
+    </div>
 
-        <div>
-
-            <button type="submit" class="btn-submit" id=" btnSubmit">
-                Submit
-             </button>
-        </div>
-
-    </form>
-    <script src="js/formtojson.js"></script>
+    <!-- Generic error page (anything not 404,410) -->
+    <div id="error" class="fullscreen" hidden>
+        <h1>Uh Oh</h1>
+        <h2>500</h2>
+        <p>Something has gone really wrong.</p>
+    </div>
+    <script type=" module" src="js/register.js"></script>
 </body>
 
 </html>

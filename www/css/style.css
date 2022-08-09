@@ -1,0 +1,139 @@
+body {
+    font-family: sans-serif;
+    font-size: 1.5rem;
+
+    --bg: #181818;
+    --modal-bg: #212121;
+    --accent: #ffae00;
+    --border: #333;
+    --text: #cecece;
+
+    --radius: 17px;
+
+    --line-border: 2px solid var(--border);
+
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+main,
+header {
+    padding: 0;
+    max-width: 20em;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+}
+
+button {
+    border: var(--line-border);
+    border-radius: var(--radius);
+    background-color: var(--accent);
+
+    font-size: inherit;
+    padding: 0.5em;
+    width: 100%;
+}
+
+main {
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-radius: var(--radius);
+    /* border: var(--line-border); */
+    background-color: var(--modal-bg);
+}
+
+main>* {
+    margin-bottom: 2em;
+}
+
+main button:last-child {
+    border-radius: 0 0 var(--radius) var(--radius);
+    border: none;
+    width: calc(100% + 2em);
+    margin: -1em;
+}
+
+#profile img {
+    border-radius: var(--radius);
+}
+
+#profile {
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+}
+
+#profile .username {
+    margin-top: 0;
+}
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.fullscreen[hidden] {
+    display: none;
+}
+
+#loading .spinner {
+    display: inline-block;
+    border: 16px solid var(--border);
+    /* Light grey */
+    border-top: 16px solid var(--accent);
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+form {
+    --invalid: rgb(196, 57, 57);
+}
+
+form p {
+    display: block;
+}
+
+form .invalid {
+    color: var(--invalid);
+    border-color: var(--invalid);
+}
+
+form input {
+    display: block;
+    background-color: inherit;
+    border: var(--line-border);
+    border-color: inherit;
+    border-radius: var(--radius);
+    padding: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+    width: 100%;
+    color: var(--text);
+    position: relative;
+}
