@@ -8,9 +8,9 @@ body {
     --border: #333;
     --text: #cecece;
 
-    --radius: 17px;
+    --radius: 10px;
 
-    --line-border: 2px solid var(--border);
+    --line-border: 1px solid var(--border);
 
     background-color: var(--bg);
     color: var(--text);
@@ -133,7 +133,7 @@ form input {
     padding: 0.5em;
     font-size: inherit;
     font-family: inherit;
-    width: 100%;
+    width: calc(100% - 1em);
     color: var(--text);
     position: relative;
 }

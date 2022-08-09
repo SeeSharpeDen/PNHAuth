@@ -10,6 +10,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <title>PNH Minecraft - Edit Account</title>
+
+    <style>
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #181818;
+            z-index: 100;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,8 +31,8 @@
     </header>
     <main>
         <div id="profile">
-            <img data-player="profile" src="https://crafthead.net/avatar/char">
-            <h3 data-player="username" class="username"></h3>
+            <img data-player="profile" height="180px">
+            <h3 data-player="username" class="username">no name</h3>
         </div>
         <form>
             <p>
@@ -39,22 +51,31 @@
                 <span class="error"></span>
             </p>
         </form>
-        <button type="submit">Apply Changes</button>
+        <button>Apply Changes</button>
     </main>
+
+    <!-- The loading page -->
     <div id="loading" class="fullscreen">
         <div class="spinner"></div>
         <h3>Loading</h3>
     </div>
 
+    <!-- Waiting for email verification page -->
+    <div id="email-sent" class="fullscreen" hidden>
+        <h1>Almost Done</h1>
+        <p>Click the link in the email we sent to you.</p>
+        <p>You might have to check your spam folder.</p>
+    </div>
+
     <!-- The 410 error page (link_code expired) -->
-    <div id="error410" class="fullscreen" hidden>
+    <div id="error-410" class="fullscreen" hidden>
         <h1>Uh Oh</h1>
         <p>It appears your link has expired.</p>
         <p>You'll have to create a new one on the server.</p>
     </div>
 
     <!-- The 404 error page (no link_code found) -->
-    <div id="error404" class="fullscreen" hidden>
+    <div id="error-404" class="fullscreen" hidden>
         <h1>404</h1>
         <p>Link not found.</p>
         <p>You'll have to create one on the server.</p>
@@ -63,7 +84,7 @@
     <!-- Generic error page (anything not 404,410) -->
     <div id="error" class="fullscreen" hidden>
         <h1>Uh Oh</h1>
-        <h2>500</h2>
+        <h3>500</h3>
         <p>Something has gone really wrong.</p>
     </div>
     <script type=" module" src="js/register.js"></script>
