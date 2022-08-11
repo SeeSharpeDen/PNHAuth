@@ -1,6 +1,5 @@
 body {
     font-family: sans-serif;
-    font-size: 1.25rem;
 
     --bg: #181818;
     --modal-bg: #212121;
@@ -19,12 +18,16 @@ body {
 main,
 header {
     padding: 0;
-    max-width: 20em;
-    margin: auto;
 }
 
 header {
     text-align: center;
+}
+
+a,
+a:hover,
+a:visited {
+    color: var(--accent);
 }
 
 button {
@@ -85,7 +88,11 @@ main button:last-child {
     flex-direction: column;
 }
 
-.fullscreen[hidden] {
+.fullscreen.divided .big {
+    font-size: 500%;
+}
+
+.fullscreen.divided div .fullscreen[hidden] {
     display: none;
 }
 
@@ -137,3 +144,35 @@ form input {
     color: var(--text);
     position: relative;
 }
+
+/* Pages wider than 800px (landscape maybe?) */
+@media only screen and (min-width: 800px) {
+    body {
+        font-size: 1.25rem;
+    }
+
+    .fullscreen.divided {
+        flex-direction: row;
+    }
+
+    .fullscreen.divided .big {
+        padding-right: 5rem;
+    }
+
+    .fullscreen.divided div {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: left;
+        flex-direction: column;
+    }
+
+    main,
+    header {
+        max-width: 20em;
+        margin: auto;
+    }
+}
+
+/* Pages wider than 1200px (desktop) */
+@media only screen and (min-width: 1200px) {}

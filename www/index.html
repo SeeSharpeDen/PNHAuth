@@ -2,9 +2,17 @@
 <html lang="en">
 
 <head>
-    <!-- the data-link-code should be set via ssi (preferably nginx) to the link_code -->
-    <!-- of the url http://example.com/link/[link_code] -->
-    <!-- <meta data-link-code="test"> -->
+    <!-- Server side includes for link_code, email_code and api_url. -->
+    <!-- Any half decent web-sever will support these. -->
+    <!-- #if expr="link_code" -->
+    <meta data-link-code='<!--#echo var="link_code"-->'>
+    <!-- #endif -->
+    <!-- #if expr="email_code" -->
+    <meta data-email-code='<!--#echo var="email_code"-->'>
+    <!-- #endif -->
+    <!-- #if expr="api_url" -->
+    <meta data-api-url='<!--#echo var="api_url"-->'>
+    <!-- #endif -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,35 +65,55 @@
     <!-- The loading page -->
     <div id="loading" class="fullscreen">
         <div class="spinner"></div>
-        <h3>Loading</h3>
+        <h1>Loading</h1>
+    </div>
+
+    <!-- Email verification worked. -->
+    <div id="email-verified" class="fullscreen divided" hidden>
+        <span class="big">✅</span>
+        <div>
+            <h1>Email Verified!</h1>
+            <p>You can continue playing.</p>
+            <p>We'll message you in-game when we're done processing behind the scenes.</p>
+        </div>
     </div>
 
     <!-- Waiting for email verification page -->
-    <div id="email-sent" class="fullscreen" hidden>
-        <h1>Almost Done</h1>
-        <p>Click the link in the email we sent to you.</p>
-        <p>You might have to check your spam folder.</p>
+    <div id="email-sent" class="fullscreen divided" hidden>
+        <span class="big">📬</span>
+        <div>
+            <h1>Almost Done</h1>
+            <p>Click the link in the email we sent to you.</p>
+            <p>You might have to check your spam folder.</p>
+        </div>
     </div>
 
     <!-- The 410 error page (link_code expired) -->
-    <div id="error-410" class="fullscreen" hidden>
-        <h1>Uh Oh</h1>
-        <p>It appears your link has expired.</p>
-        <p>You'll have to create a new one on the server.</p>
+    <div id="error-410" class="fullscreen divided" hidden>
+        <span class="big">🤷</span>
+        <div>
+            <h1>Uh Oh</h1>
+            <p>It appears your link has expired.</p>
+            <p>You'll have to create a new one on the server.</p>
+        </div>
     </div>
 
     <!-- The 404 error page (no link_code found) -->
-    <div id="error-404" class="fullscreen" hidden>
-        <h1>404</h1>
-        <p>Link not found.</p>
-        <p>You'll have to create one on the server.</p>
+    <div id="error-404" class="fullscreen divided" hidden>
+        <span class="big">🔍</span>
+        <div>
+            <h1>404</h1>
+            <p>URL not found.</p>
+        </div>
     </div>
 
     <!-- Generic error page (anything not 404,410) -->
-    <div id="error" class="fullscreen" hidden>
-        <h1>Uh Oh</h1>
-        <h3>500</h3>
-        <p>Something has gone really wrong.</p>
+    <div id="error" class="fullscreen divided" hidden>
+        <span class="big">⚠️</span>
+        <div>
+            <h1>Uh Oh</h1>
+            <p>Something has gone terribly wrong.</p>
+        </div>
     </div>
     <script type=" module" src="js/register.js"></script>
 </body>
